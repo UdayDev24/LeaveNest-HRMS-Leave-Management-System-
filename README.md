@@ -16,18 +16,26 @@
 - **APIs**: Web Speech API for voice commands
 
 ## 📂 Project Structure
-/LeaveNest
-├── index.html # Landing page
-├── login.html # Login page
-├── dashboard.html # Main dashboard
-├── applyLeave.html # Leave application
-├── approval.html # Manager approvals
-├── leaveHistory.html # Leave history
+```
+LeaveNest/
+├── index.html          # Landing page
+├── login.html          # Login page
+├── dashboard.html      # Main dashboard
+├── applyLeave.html     # Leave application
+├── approval.html       # Manager approvals
+├── leaveHistory.html   # Leave history
 ├── assets/
-│ ├── css/style.css # All styles
-│ └── js/ # All JavaScript files
-└── README.md 
-
+│   ├── css/
+│   │   └── style.css   # All styles
+│   └── js/
+│       ├── auth.js     # Authentication
+│       ├── dashboard.js
+│       ├── applyLeave.js
+│       ├── approval.js
+│       └── leaveHistory.js
+├── screenshots/        # Project screenshots
+└── README.md           # This file
+```
 
 ## 🚀 How to Run
 1. Clone the repository:
