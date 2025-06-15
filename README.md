@@ -47,7 +47,7 @@ LeaveNest/
 2. Open index.html in your browser
 
 
-🎤 Voice Commands
+## 🎤 Voice Commands
 Try these after clicking the microphone:
 
 "Login as admin"
@@ -57,7 +57,7 @@ Try these after clicking the microphone:
 "Show leave history"
 
 
-🌓 Dark/Light Mode
+## 🌓 Dark/Light Mode
 Toggle the switch in the header to change themes.
 
 
