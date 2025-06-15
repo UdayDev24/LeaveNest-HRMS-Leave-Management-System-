@@ -55,5 +55,6 @@ Toggle the switch in the header to change themes.
 
 📸 Screenshots
 
-https://./screenshots/login.png	                              https://./screenshots/apply-leave.png
-Voice-enabled Login	                                                  Effective Work-Flow
+| ![Login Page](./screenshots/login.png) | ![Apply Leave](./screenshots/apply-leave.png) |
+|----------------------------------------|-----------------------------------------------|
+| Voice-enabled Login                    | Leave Application Form                        |
