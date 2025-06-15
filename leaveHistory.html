@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leave History - HRMS Leave Management</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.css">
+  <link rel="stylesheet" href="assets\CSS\style.css">
+</head>
+<body>
+  <div class="dashboard">
+    <aside class="sidebar glass-container">
+      <div class="sidebar-header">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="url(#paint0_linear)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M12 8V16" stroke="url(#paint1_linear)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M8 12H16" stroke="url(#paint2_linear)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <defs>
+            <linearGradient id="paint0_linear" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#4CC9F0"/>
+              <stop offset="1" stop-color="#F72585"/>
+            </linearGradient>
+            <linearGradient id="paint1_linear" x1="12" y1="8" x2="12" y2="16" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#4CC9F0"/>
+              <stop offset="1" stop-color="#F72585"/>
+            </linearGradient>
+            <linearGradient id="paint2_linear" x1="8" y1="12" x2="16" y2="12" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#4CC9F0"/>
+              <stop offset="1" stop-color="#F72585"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <h2>HRMS</h2>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <a href="dashboard.html" class="nav-item">
+          <i class="fas fa-home"></i>
+          <span>Dashboard</span>
+        </a>
+        <a href="applyLeave.html" class="nav-item">
+          <i class="fas fa-calendar-plus"></i>
+          <span>Apply Leave</span>
+        </a>
+        <a href="leaveHistory.html" class="nav-item active">
+          <i class="fas fa-history"></i>
+          <span>Leave History</span>
+        </a>
+        <a href="approval.html" class="nav-item" id="approvalLink" style="display: none;">
+          <i class="fas fa-clipboard-check"></i>
+          <span>Approvals</span>
+        </a>
+        <a href="login.html" class="nav-item" id="logoutBtn">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>Logout</span>
+        </a>
+      </nav>
+      
+      <div class="user-profile">
+        <div class="avatar">
+          <i class="fas fa-user-circle"></i>
+        </div>
+        <div class="user-info">
+          <span class="username" id="sidebarUsername">John Doe</span>
+          <span class="role" id="sidebarRole">Employee</span>
+        </div>
+      </div>
+    </aside>
+    
+    <main class="main-content">
+      <div class="header">
+        <h1>My Leave History</h1>
+        <div class="header-actions">
+          <div class="history-filters">
+            <select id="yearFilter" class="glass-input">
+              <option value="all">All Years</option>
+              <option value="2025" selected>2025</option>
+              <option value="2024">2024</option>
+              <option value="2023">2023</option>
+            </select>
+            <select id="typeFilter" class="glass-input">
+              <option value="all">All Types</option>
+              <option value="casual">Casual</option>
+              <option value="sick">Sick</option>
+              <option value="medical">Medical</option>
+              <option value="annual">Annual</option>
+            </select>
+            <select id="statusFilter" class="glass-input">
+              <option value="all">All Statuses</option>
+              <option value="approved">Approved</option>
+              <option value="pending">Pending</option>
+              <option value="rejected">Rejected</option>
+            </select>
+          </div>
+          <label class="theme-toggle">
+            <input type="checkbox" id="themeToggle">
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+      
+      <div class="glass-container" style="padding: 1.5rem; margin-bottom: 2rem;">
+        <div class="chart-container">
+          <canvas id="leaveHistoryChart"></canvas>
+        </div>
+      </div>
+      
+      <div class="glass-container" style="padding: 2rem;">
+        <div class="history-summary">
+          <div class="summary-item">
+            <span class="summary-value" id="totalLeavesTaken">15</span>
+            <span class="summary-label">Total Leaves Taken</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-value" id="leavesRemaining">10</span>
+            <span class="summary-label">Leaves Remaining</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-value" id="approvalRate">92%</span>
+            <span class="summary-label">Approval Rate</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-value" id="avgLeaveLength">2.3</span>
+            <span class="summary-label">Avg. Duration (days)</span>
+          </div>
+        </div>
+        
+      <div class="table-responsive">  
+        <table class="history-table">
+          <thead>
+            <tr>
+              <th>Leave Type</th>
+              <th>Dates</th>
+              <th>Duration</th>
+              <th>Reason</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="historyTableBody">
+            <!-- Populated by JavaScript -->
+          </tbody>
+        </table>
+      </div>  
+
+        <div class="pagination">
+          <button class="btn btn-outline" id="historyPrevPage"><i class="fas fa-chevron-left"></i></button>
+          <span class="page-info">Page 1 of 2</span>
+          <button class="btn btn-outline" id="historyNextPage"><i class="fas fa-chevron-right"></i></button>
+        </div>
+      </div>
+      
+      <!-- Leave Detail Modal -->
+      <div class="modal" id="leaveDetailModal">
+        <div class="modal-content glass-container">
+          <div class="modal-header">
+            <h2>Leave Details</h2>
+            <button class="close-modal">&times;</button>
+          </div>
+          <div class="modal-body">
+            <div class="leave-details">
+              <div class="detail-item">
+                <span>Leave Type:</span>
+                <span id="detailType">Casual Leave</span>
+              </div>
+              <div class="detail-item">
+                <span>Dates:</span>
+                <span id="detailDates">Jun 10 - Jun 12, 2025</span>
+              </div>
+              <div class="detail-item">
+                <span>Duration:</span>
+                <span id="detailDuration">3 days</span>
+              </div>
+              <div class="detail-item">
+                <span>Status:</span>
+                <span class="status-badge status-approved" id="detailStatus">Approved</span>
+              </div>
+              <div class="detail-item">
+                <span>Applied On:</span>
+                <span id="detailApplied">Jun 5, 2025</span>
+              </div>
+              <div class="detail-item">
+                <span>Processed On:</span>
+                <span id="detailProcessed">Jun 6, 2025</span>
+              </div>
+              <div class="detail-item full-width">
+                <span>Reason:</span>
+                <p id="detailReason">Family vacation</p>
+              </div>
+              <div class="detail-item full-width">
+                <span>Description:</span>
+                <p id="detailDescription">Taking my family on a short vacation to the mountains.</p>
+              </div>
+              <div class="detail-item full-width" id="managerCommentsContainer">
+                <span>Manager Comments:</span>
+                <p id="managerComments">Approved as per company policy. Enjoy your vacation!</p>
+              </div>
+            </div>
+            
+            <div class="modal-actions">
+              <button class="btn btn-outline" id="printLeaveBtn">
+                <i class="fas fa-print"></i> Print
+              </button>
+              <button class="btn btn-primary" id="closeDetailBtn">
+                <i class="fas fa-times"></i> Close
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+    <div class="voice-command">
+    <div class="voice-btn" id="voiceBtn">
+      <i class="fas fa-microphone"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+  <script src="auth.js"></script>
+  <script src="leaveHistory.js"></script>
+</body>
+</html>

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - HRMS Leave Management</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.css">
+  <link rel="stylesheet" href="assets\CSS\style.css">
+</head>
+<body>
+  <div class="dashboard">
+    <aside class="sidebar glass-container">
+      <div class="sidebar-header">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="url(#paint0_linear)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M12 8V16" stroke="url(#paint1_linear)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M8 12H16" stroke="url(#paint2_linear)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <defs>
+            <linearGradient id="paint0_linear" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#4CC9F0"/>
+              <stop offset="1" stop-color="#F72585"/>
+            </linearGradient>
+            <linearGradient id="paint1_linear" x1="12" y1="8" x2="12" y2="16" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#4CC9F0"/>
+              <stop offset="1" stop-color="#F72585"/>
+            </linearGradient>
+            <linearGradient id="paint2_linear" x1="8" y1="12" x2="16" y2="12" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#4CC9F0"/>
+              <stop offset="1" stop-color="#F72585"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <h2>HRMS</h2>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <a href="dashboard.html" class="nav-item active">
+          <i class="fas fa-home"></i>
+          <span>Dashboard</span>
+        </a>
+        <a href="applyLeave.html" class="nav-item">
+          <i class="fas fa-calendar-plus"></i>
+          <span>Apply Leave</span>
+        </a>
+        <a href="leaveHistory.html" class="nav-item">
+          <i class="fas fa-history"></i>
+          <span>Leave History</span>
+        </a>
+        <a href="approval.html" class="nav-item" id="approvalLink" style="display: none;">
+          <i class="fas fa-clipboard-check"></i>
+          <span>Approvals</span>
+        </a>
+        <a href="login.html" class="nav-item" id="logoutBtn">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>Logout</span>
+        </a>
+      </nav>
+      
+      <div class="user-profile">
+        <div class="avatar">
+          <i class="fas fa-user-circle"></i>
+        </div>
+        <div class="user-info">
+          <span class="username" id="sidebarUsername">John Doe</span>
+          <span class="role" id="sidebarRole">Employee</span>
+        </div>
+      </div>
+    </aside>
+    
+    <main class="main-content">
+      <div class="header">
+        <h1>Welcome, <span id="usernameDisplay"></span></h1>
+        <div class="header-actions">
+          <button class="btn btn-primary" id="quickLeaveBtn">
+            <i class="fas fa-plus"></i> Quick Leave
+          </button>
+          <label class="theme-toggle">
+            <input type="checkbox" id="themeToggle">
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+      
+      <div class="stats-grid">
+        <div class="glass-container stat-card card-3d">
+          <h3>Total Leaves</h3>
+          <div class="value" id="totalLeaves">12</div>
+          <div class="trend up">
+            <i class="fas fa-arrow-up"></i> 2 from last month
+          </div>
+        </div>
+        
+        <div class="glass-container stat-card card-3d">
+          <h3>Pending Approval</h3>
+          <div class="value" id="pendingLeaves">3</div>
+          <div class="trend down">
+            <i class="fas fa-arrow-down"></i> 1 from last week
+          </div>
+        </div>
+        
+        <div class="glass-container stat-card card-3d">
+          <h3>Approved Leaves</h3>
+          <div class="value" id="approvedLeaves">8</div>
+          <div class="trend up">
+            <i class="fas fa-arrow-up"></i> 3 from last month
+          </div>
+        </div>
+        
+        <div class="glass-container stat-card card-3d">
+          <h3>Leave Balance</h3>
+          <div class="value" id="leaveBalance">15</div>
+          <div class="progress-bar">
+            <div class="progress" style="width: 75%"></div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="glass-container" style="padding: 1.5rem; margin-bottom: 2rem;">
+        <div class="chart-container">
+          <canvas id="leaveTrendChart"></canvas>
+        </div>
+      </div>
+      
+      <div class="glass-container" style="padding: 1.5rem;">
+        <div class="section-header">
+          <h2>Recent Leave Requests</h2>
+          <div class="view-actions">
+            <button class="btn btn-outline active">All</button>
+            <button class="btn btn-outline">Pending</button>
+            <button class="btn btn-outline">Approved</button>
+          </div>
+        </div>
+        
+        <table class="leave-table">
+          <thead>
+            <tr>
+              <th>Employee</th>
+              <th>Leave Type</th>
+              <th>Dates</th>
+              <th>Duration</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="leaveRequestsTable">
+            <!-- Populated by JavaScript -->
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+  
+  <div class="voice-command">
+    <div class="voice-btn" id="voiceBtn">
+      <i class="fas fa-microphone"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+  <script src="auth.js"></script>
+  <script src="dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - HRMS Leave Management</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets\CSS\style.css">
+</head>
+<body>
+  <div class="glass-container login-container">
+    <div class="login-header">
+      <div class="logo">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="url(#paint0_linear)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M12 8V16" stroke="url(#paint1_linear)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M8 12H16" stroke="url(#paint2_linear)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <defs>
+            <linearGradient id="paint0_linear" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#4CC9F0"/>
+              <stop offset="1" stop-color="#F72585"/>
+            </linearGradient>
+            <linearGradient id="paint1_linear" x1="12" y1="8" x2="12" y2="16" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#4CC9F0"/>
+              <stop offset="1" stop-color="#F72585"/>
+            </linearGradient>
+            <linearGradient id="paint2_linear" x1="8" y1="12" x2="16" y2="12" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#4CC9F0"/>
+              <stop offset="1" stop-color="#F72585"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <h2>HRMS Login</h2>
+      </div>
+      <p>Enter your credentials to access the system</p>
+    </div>
+
+    <form id="loginForm">
+      <div class="input-group">
+        <i class="fas fa-user"></i>
+        <input type="text" id="username" placeholder="Username" required>
+      </div>
+      
+      <div class="input-group">
+        <i class="fas fa-lock"></i>
+        <input type="password" id="password" placeholder="Password" required>
+      </div>
+      
+      <div class="form-footer">
+        <button type="submit" class="btn btn-primary">
+          <i class="fas fa-sign-in-alt"></i> Login
+        </button>
+        
+        <div class="alternative-auth">
+          <button type="button" class="btn btn-outline" id="voiceLoginBtn">
+            <i class="fas fa-microphone"></i> Voice Login
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="theme-toggle-container">
+    <label class="theme-toggle">
+      <input type="checkbox" id="themeToggle">
+      <span class="slider"></span>
+    </label>
+    <span id="themeLabel">Dark Mode</span>
+  </div>
+
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      
+      // Simple validation
+      if (username === 'admin' && password === 'admin') {
+        showToast('Login successful! Redirecting...', 'success');
+        localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('username', username);
+        localStorage.setItem('role', username === 'admin' ? 'manager' : 'employee');
+        
+        setTimeout(() => {
+          window.location.href = 'dashboard.html';
+        }, 1500);
+      } else if (username === 'employee' && password === 'employee') {
+        showToast('Login successful! Redirecting...', 'success');
+        localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('username', username);
+        localStorage.setItem('role', 'employee');
+        
+        setTimeout(() => {
+          window.location.href = 'dashboard.html';
+        }, 1500);
+      } else {
+        showToast('Invalid credentials. Please try again.', 'error');
+      }
+    });
+    
+    // Theme toggle functionality
+    const themeToggle = document.getElementById('themeToggle');
+    const themeLabel = document.getElementById('themeLabel');
+    
+    themeToggle.addEventListener('change', function() {
+      if (this.checked) {
+        document.documentElement.setAttribute('data-theme', 'light');
+        themeLabel.textContent = 'Light Mode';
+      } else {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        themeLabel.textContent = 'Dark Mode';
+      }
+    });
+    
+    // Voice login simulation
+    document.getElementById('voiceLoginBtn').addEventListener('click', function() {
+      if ('webkitSpeechRecognition' in window) {
+        const recognition = new webkitSpeechRecognition();
+        recognition.continuous = false;
+        recognition.interimResults = false;
+        
+        recognition.onstart = function() {
+          showToast('Listening... Speak now', 'success');
+        };
+        
+        recognition.onresult = function(event) {
+          const command = event.results[0][0].transcript.toLowerCase();
+          if (command.includes('login as admin')) {
+            document.getElementById('username').value = 'admin';
+            document.getElementById('password').value = 'admin';
+            document.getElementById('loginForm').dispatchEvent(new Event('submit'));
+          } else if (command.includes('login as employee')) {
+            document.getElementById('username').value = 'employee';
+            document.getElementById('password').value = 'employee';
+            document.getElementById('loginForm').dispatchEvent(new Event('submit'));
+          } else {
+            showToast('Command not recognized. Try "Login as admin" or "Login as employee"', 'error');
+          }
+        };
+        
+        recognition.start();
+      } else {
+        showToast('Voice recognition not supported in your browser', 'error');
+      }
+    });
+    
+    // Toast notification function
+    function showToast(message, type) {
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      toast.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i> ${message}`;
+      document.body.appendChild(toast);
+      
+      setTimeout(() => {
+        toast.remove();
+      }, 3000);
+    }
+  </script>
+</body>
+</html>
