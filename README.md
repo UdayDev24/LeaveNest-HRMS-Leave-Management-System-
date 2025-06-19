@@ -68,5 +68,5 @@ Toggle the switch in the header to change themes.
 | Voice-enabled Login                    | Leave Application Form                        |
 
 
-🎉 Thanks for checking out this project!
-Let me know if you need any improvements. 🚀
+## 🎉 Thanks for checking out this project!
+## Let me know if you need any improvements. 🚀
