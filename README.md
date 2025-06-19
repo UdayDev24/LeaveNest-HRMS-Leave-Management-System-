@@ -61,7 +61,7 @@ Try these after clicking the microphone:
 Toggle the switch in the header to change themes.
 
 
-📸 Screenshots
+## 📸 Screenshots
 
 | ![Login Page](./screenshots/login.png) | ![Apply Leave](./screenshots/apply-leave.png) |
 |----------------------------------------|-----------------------------------------------|
